@@ -1,9 +1,14 @@
 
+export function validateTaskCreation(task: any) {
+    const errors: string[] = [];
+    return errors;
+}
+
 export function validateTaskStatusChange(currentStatus: string, newStatus: string) {
     const validStatuses = ['pending', 'in_progress', 'completed', 'cancelled'];
     const errors: string[] = [];
     if (newStatus === 'cancelled') {
-        return errors; // Any status can transition to 'cancelled'
+        return errors;
     }
     if (currentStatus === 'pending' && newStatus != 'in_progress') {
         errors.push(`Invalid status transition from ${currentStatus} to ${newStatus}`);

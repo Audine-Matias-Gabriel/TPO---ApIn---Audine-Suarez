@@ -1,5 +1,5 @@
 
-export function validateCreateComment(data: any) {
+export function validateCommentCreation(data: any) {
     const errors: string[] = [];
     if (!data.body || typeof data.body !== "string" || data.body.trim() === "") {
         errors.push("Comment body is required and must be a non-empty string.");
