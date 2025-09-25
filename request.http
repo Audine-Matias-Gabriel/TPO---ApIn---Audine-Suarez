@@ -1,5 +1,8 @@
 @baseUrl = https://localhost:3000
 
+### Docs
+GET {{baseUrl}}/docs
+
 ### User
 
 ### Create a new user
