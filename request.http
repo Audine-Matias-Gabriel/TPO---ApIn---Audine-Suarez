@@ -16,15 +16,15 @@ Content-Type: application/json
 {
     "name": "Alfonso",
     "email": "alfonso@gmail.com",
-    "password": "password",
-}
+    "password": "password"
+} // Don't return password
 ### Update user by ID
 PUT {{baseUrl}}/users/1
 Content-Type: application/json
 
 {
     "name": "Alfonso Perez",
-    "password": "newpassword",
+    "password": "newpassword"
 }
 ### Delete user by ID
 DELETE {{baseUrl}}/users/1
@@ -81,7 +81,7 @@ Content-Type: application/json
 
 {
     "title": "Updated Task",
-    "status": "in-progress",
+    "status": "in-progress"
 }
 ### Update task by ID, failing case
 PUT {{baseUrl}}/tasks/1
@@ -89,7 +89,7 @@ Content-Type: application/json
 
 {
     "title": "Updated Task",
-    "status": "pending",
+    "status": "pending"
 }
 ### Delete task by ID
 DELETE {{baseUrl}}/tasks/1
@@ -120,3 +120,12 @@ Content-Type: application/json
 }
 ### Delete comment by ID
 DELETE {{baseUrl}}/comments/1
+
+### User-Project Association
+POST {{baseUrl}}/usersProjects
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "projectId": 1
+}
