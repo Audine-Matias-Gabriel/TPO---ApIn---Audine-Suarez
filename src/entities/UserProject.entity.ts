@@ -19,6 +19,6 @@ export class UserProject {
     @ManyToOne(() => Project, project => project.userProjects)
     project!: Project;
 
-    @Column({ type: "varchar" })
+    @Column({ type: "enum", enum: ["owner", "member"], default: "member" })
     role!: "owner" | "member";
 }

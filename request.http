@@ -1,0 +1,119 @@
+@baseUrl = https://localhost:3000
+
+### User
+
+### Create a new user
+GET {{baseUrl}}/users
+### Get user by ID
+GET {{baseUrl}}/users/1
+### Create a new user
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "name": "Alfonso",
+    "email": "alfonso@gmail.com",
+    "password": "password",
+}
+### Update user by ID
+PUT {{baseUrl}}/users/1
+Content-Type: application/json
+
+{
+    "name": "Alfonso Perez",
+    "password": "newpassword",
+}
+### Delete user by ID
+DELETE {{baseUrl}}/users/1
+
+---
+
+### Project
+
+### Create a new project
+POST {{baseUrl}}/projects
+Content-Type: application/json
+
+{
+    "name": "New Project",
+    "description": "This is a new project"
+}
+### Get all projects
+GET {{baseUrl}}/projects
+### Get project by ID
+GET {{baseUrl}}/projects/1
+### Update project by ID
+PUT {{baseUrl}}/projects/1
+Content-Type: application/json
+
+{
+    "name": "Updated Project",
+    "description": "New description"
+}
+### Delete project by ID
+DELETE {{baseUrl}}/projects/1
+
+---
+
+### Task
+
+### Create a new task
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+    "title": "New Task",
+    "description": "This is a new task",
+    "status": "pending",
+    "assignedTo": 1,
+    "projectId": 1
+}
+### Get all tasks
+GET {{baseUrl}}/tasks
+### Get task by ID
+GET {{baseUrl}}/tasks/1
+### Update task by ID
+PUT {{baseUrl}}/tasks/1
+Content-Type: application/json
+
+{
+    "title": "Updated Task",
+    "status": "in-progress",
+}
+### Update task by ID, failing case
+PUT {{baseUrl}}/tasks/1
+Content-Type: application/json
+
+{
+    "title": "Updated Task",
+    "status": "pending",
+}
+### Delete task by ID
+DELETE {{baseUrl}}/tasks/1
+
+---
+
+### Comment
+
+### Create a new comment
+POST {{baseUrl}}/comments
+Content-Type: application/json
+
+{
+    "body": "Test comment",
+    "task": 1,
+    "author": 1
+}
+### Get all comments
+GET {{baseUrl}}/comments
+### Get comment by ID
+GET {{baseUrl}}/comments/1
+### Update comment by ID
+PUT {{baseUrl}}/comments/1
+Content-Type: application/json
+
+{
+    "body": "Updated comment"
+}
+### Delete comment by ID
+DELETE {{baseUrl}}/comments/1
