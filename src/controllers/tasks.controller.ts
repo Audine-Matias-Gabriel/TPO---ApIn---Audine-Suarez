@@ -17,6 +17,9 @@ export async function updateTaskStatusController(req: Request, res: Response) {
         return res.status(400).json({ error: "Task id is required" });
     }
     const { status: newStatus } = req.body;
+    if (!newStatus) {
+        return res.status(400).json({ error: "New status is required" });
+    }
 
     const task = await tasksService.findById(id);
     if (!task) {
@@ -30,6 +33,19 @@ export async function updateTaskStatusController(req: Request, res: Response) {
 
     task.status = newStatus;
     const updatedTask = await tasksService.update(id, task);
+    res.json(updatedTask);
+}
+
+export async function updateTaskController(req: Request, res: Response) {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ error: "Task id is required" });
+    }
+    const task = await tasksService.findById(id);
+    if (!task) {
+        return res.status(404).json({ error: "Task not found" });
+    }
+    const updatedTask = await tasksService.update(id, req.body);
     res.json(updatedTask);
 }
 

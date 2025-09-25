@@ -4,7 +4,7 @@ export function validateUserCreation(task: any) {
     return errors;
 }
 
-export function validateEmail(email: string) {
+export function validateUserEmail(email: string) {
     const errors: string[] = [];
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {

@@ -12,3 +12,11 @@ export function validateCommentCreation(data: any) {
     }
     return errors;
 }
+
+export function validateCommentUpdate(data: any): string[] {
+    const errors: string[] = [];
+    if (data.body !== undefined && (typeof data.body !== "string" || data.body.trim() === "")) {
+        errors.push("El comentario no puede estar vacío");
+    }
+    return errors;
+}

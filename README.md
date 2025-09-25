@@ -8,27 +8,9 @@
 
 ## TO DO:
 ```
-controllers
-    User
-    Project
-    Comment
-```
-```
 db/migrations
     User
     Project
     Task
-    Comment
-```
-```
-routes
-    User
-    Project
-    Task
-    Comment
-```
-```
-validators
-    Project
     Comment
 ```

@@ -1,6 +1,6 @@
 import { User } from '../entities/User.entity';
 import AppDataSource from '../db/data-source';
-import { validateEmail } from '../validators/users.validator';
+import { validateUserEmail } from '../validators/users.validator';
 //import bcrypt from 'bcrypt';
 
 const userRepository = AppDataSource.getRepository(User);
@@ -12,7 +12,7 @@ export const usersService = {
         if (!userData.email) {
             throw new Error("Email is required");
         }
-        if (validateEmail(userData.email).length != 0) {
+        if (validateUserEmail(userData.email).length != 0) {
             throw new Error("Invalid email format");
         }
         const existingUser = await userRepository.findOne({ where: { email: userData.email } });
