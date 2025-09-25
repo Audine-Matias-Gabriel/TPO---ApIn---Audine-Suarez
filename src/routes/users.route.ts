@@ -3,8 +3,8 @@ import { getAllUsersController, getUserByIdController, createUserController, del
 
 export const usersRouter = Router();
 
-usersRouter.get('/users', getAllUsersController);
-usersRouter.get('/users/:id', getUserByIdController);
-usersRouter.post('/users', createUserController);
-usersRouter.put('/users/:id', updateUserController);
-usersRouter.delete('/users/:id', deleteUserController);
+usersRouter.get('', getAllUsersController);
+usersRouter.get('/:id', getUserByIdController);
+usersRouter.post('', createUserController);
+usersRouter.put('/:id', updateUserController);
+usersRouter.delete('/:id', deleteUserController);

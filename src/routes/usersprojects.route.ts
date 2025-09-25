@@ -3,4 +3,4 @@ import { createUserProjectController } from '../controllers/usersprojects.contro
 
 export const userProjectRouter = Router();
 
-userProjectRouter.post('/projects/:projectId/users/:userId', createUserProjectController);
+userProjectRouter.post('/:projectId/users/:userId', createUserProjectController);

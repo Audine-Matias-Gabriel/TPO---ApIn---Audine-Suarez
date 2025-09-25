@@ -3,8 +3,8 @@ import { getAllCommentsController, getCommentByIdController, createCommentContro
 
 export const commentsRouter = Router();
 
-commentsRouter.get('/comments', getAllCommentsController);
-commentsRouter.get('/comments/:id', getCommentByIdController);
-commentsRouter.post('/comments', createCommentController);
-commentsRouter.put('/comments/:id', updateCommentController);
-commentsRouter.delete('/comments/:id', deleteCommentController);
+commentsRouter.get('', getAllCommentsController);
+commentsRouter.get('/:id', getCommentByIdController);
+commentsRouter.post('', createCommentController);
+commentsRouter.put('/:id', updateCommentController);
+commentsRouter.delete('/:id', deleteCommentController);

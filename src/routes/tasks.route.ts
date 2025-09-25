@@ -3,9 +3,9 @@ import { getAllTasksController, getTaskByIdController, createTaskController, del
 
 export const tasksRouter = Router();
 
-tasksRouter.get('/tasks', getAllTasksController);
-tasksRouter.get('/tasks/:id', getTaskByIdController);
-tasksRouter.post('/tasks', createTaskController);
-tasksRouter.put('/tasks/:id', updateTaskController);
-tasksRouter.patch('/tasks/:id/status', updateTaskStatusController);
-tasksRouter.delete('/tasks/:id', deleteTaskController);
+tasksRouter.get('', getAllTasksController);
+tasksRouter.get('/:id', getTaskByIdController);
+tasksRouter.post('', createTaskController);
+tasksRouter.put('/:id', updateTaskController);
+tasksRouter.patch('/:id/status', updateTaskStatusController);
+tasksRouter.delete('/:id', deleteTaskController);

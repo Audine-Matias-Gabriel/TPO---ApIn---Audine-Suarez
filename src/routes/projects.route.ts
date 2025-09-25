@@ -3,8 +3,8 @@ import { getAllProjectsController, getProjectByIdController, createProjectContro
 
 export const projectsRouter = Router();
 
-projectsRouter.get('/projects', getAllProjectsController);
-projectsRouter.get('/projects/:id', getProjectByIdController);
-projectsRouter.post('/projects', createProjectController);
-projectsRouter.put('/projects/:id', updateProjectController);
-projectsRouter.delete('/projects/:id', deleteProjectController);
+projectsRouter.get('', getAllProjectsController);
+projectsRouter.get('/:id', getProjectByIdController);
+projectsRouter.post('', createProjectController);
+projectsRouter.put('/:id', updateProjectController);
+projectsRouter.delete('/:id', deleteProjectController);
