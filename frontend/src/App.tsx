@@ -1,82 +1,44 @@
-import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import api from '@/utils/api';
-import type { User, Task, Project } from '@/types';
+import { UserProvider, useUser } from '@/context/UserContext';
+import { Header } from '@/components/Header';
+import { UserSelector } from '@/components/UserSelector';
+import { Dashboard } from '@/pages/Dashboard';
+import { Tasks } from '@/pages/Tasks';
+import Projects from './pages/Projects';
+import { Activity } from '@/pages/Activity';
+import type { User } from '@/types';
 
-function App() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+function AppContent() {
+  const { currentUser, setCurrentUser, isUserSelected } = useUser();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [usersRes, projectsRes, tasksRes] = await Promise.all([
-          api.get('/users'),
-          api.get('/projects'),
-          api.get('/tasks'),
-        ]);
-        setUsers(usersRes.data);
-        setProjects(projectsRes.data);
-        setTasks(tasksRes.data);
-        setError(null);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch data');
-        console.error('API Error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  if (!isUserSelected) {
+    return <UserSelector onUserSelect={setCurrentUser} />;
+  }
 
   return (
     <div className="App">
-      <h1>Task Management Dashboard</h1>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-      {loading && <p>Loading...</p>}
-      {!loading && (
-        <>
-          <section>
-            <h2>Users ({users.length})</h2>
-            <ul>
-              {users.map((user) => (
-                <li key={user.id}>
-                  {user.name} ({user.email})
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <h2>Projects ({projects.length})</h2>
-            <ul>
-              {projects.map((project) => (
-                <li key={project.id}>
-                  <strong>{project.name}</strong>: {project.description}
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <h2>Tasks ({tasks.length})</h2>
-            <ul>
-              {tasks.map((task) => (
-                <li key={task.id}>
-                  <strong>{task.title}</strong> ({task.status}) - Project:{' '}
-                  {task.project?.name}
-                </li>
-              ))}
-            </ul>
-          </section>
-        </>
-      )}
+      <Header currentUser={currentUser} />
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/activity" element={<Activity />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
+    </Router>
   );
 }
 

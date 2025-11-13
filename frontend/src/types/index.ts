@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 // User type
 export interface User {
   id: string;
@@ -43,3 +45,6 @@ export interface UserProject {
   project: Project;
   role: 'owner' | 'member';
 }
+
+// Re-export ReactNode for convenience
+export type { ReactNode };

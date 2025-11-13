@@ -1,0 +1,33 @@
+.projects-page {
+  padding: 20px;
+}
+
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.projects-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.project-card {
+  padding: 12px;
+  border: 1px solid var(--muted-border, #e0e0e0);
+  border-radius: 6px;
+  background: var(--card-bg, #fff);
+}
+
+.project-card h3 {
+  margin: 0 0 6px 0;
+}
+
+.project-card .meta {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}

@@ -1,0 +1,13 @@
+.tasks-page { padding: 20px; }
+.tasks-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.tasks-filters { margin-bottom:12px; }
+.filter-row { display:flex; gap:12px; align-items:center; }
+.filter-item input { padding:6px 8px; border-radius:4px; border:1px solid #ddd; }
+.tasks-list { }
+.empty-state { text-align:center; padding:40px; background:var(--card-bg,#fff); border-radius:8px; }
+.empty-icon { font-size:40px; margin-bottom:8px; }
+.tasks-table { width:100%; border-collapse:collapse; background:#fff; border-radius:6px; overflow:hidden; }
+.tasks-table th, .tasks-table td { padding:10px 12px; border-bottom:1px solid #f0f0f0; text-align:left; }
+.tasks-table thead { background:#fafafa; }
+.btn { padding:8px 12px; border-radius:6px; border:1px solid #ccc; background:#fff; cursor:pointer; }
+.btn.primary { background:#2563eb; color:#fff; border-color:#2563eb; }

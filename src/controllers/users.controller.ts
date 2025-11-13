@@ -3,12 +3,17 @@ import { usersService } from "../services/users.service";
 import { Request, Response } from "express";
 
 export async function createUserController(req: Request, res: Response) {
-    const errors = validateUserCreation(req.body);
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
+    try {
+        const errors = validateUserCreation(req.body);
+        if (errors.length > 0) {
+            return res.status(400).json({ errors });
+        }
+        const user = await usersService.create(req.body);
+        res.status(201).json(user);
+    } catch (error: any) {
+        console.error('Create user error:', error.message);
+        return res.status(400).json({ error: error.message });
     }
-    const user = await usersService.create(req.body);
-    res.status(201).json(user);
 }
 
 export async function getAllUsersController(req: Request, res: Response) {
