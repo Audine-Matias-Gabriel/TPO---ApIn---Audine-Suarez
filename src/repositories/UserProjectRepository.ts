@@ -1,5 +1,5 @@
 import AppDataSource from "../db/data-source";
-import { Repository } from "typeorm";
+import { Repository, DeleteResult } from "typeorm";
 import { UserProject } from "../entities/UserProject.entity";
 
 export class UserProjectRepository {
@@ -31,7 +31,7 @@ export class UserProjectRepository {
     return this.findById(id);
   }
 
-  async deleteOne(id: string): Promise<void> {
-    await this.repository.delete({ id });
+  async deleteOne(id: string): Promise<DeleteResult> {
+    return this.repository.delete({ id });
   }
 }

@@ -1,5 +1,5 @@
 import AppDataSource from "../db/data-source";
-import { Repository } from "typeorm";
+import { Repository, DeleteResult } from "typeorm";
 import { Comment } from "../entities/Comment.entity";
 
 export class CommentRepository {
@@ -27,7 +27,7 @@ export class CommentRepository {
     return this.findById(id);
   }
 
-  async deleteOne(id: string): Promise<void> {
-    await this.repository.delete({ id });
+  async deleteOne(id: string): Promise<DeleteResult> {
+    return this.repository.delete({ id });
   }
 }
