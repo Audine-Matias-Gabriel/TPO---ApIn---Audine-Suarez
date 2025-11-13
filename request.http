@@ -45,9 +45,9 @@ Content-Type: application/json
 ### Get all projects
 GET {{baseUrl}}/projects
 ### Get project by ID
-GET {{baseUrl}}/projects/2b16d53a-66c2-4b6f-86aa-1f35837a2c98
+GET {{baseUrl}}/projects/28e62bd7-3bcb-4e21-93a4-1522a4d299c1
 ### Update project by ID
-PUT {{baseUrl}}/projects/2b16d53a-66c2-4b6f-86aa-1f35837a2c98
+PUT {{baseUrl}}/projects/28e62bd7-3bcb-4e21-93a4-1522a4d299c1
 Content-Type: application/json
 
 {
@@ -55,7 +55,7 @@ Content-Type: application/json
     "description": "New description"
 }
 ### Delete project by ID
-DELETE {{baseUrl}}/projects/2b16d53a-66c2-4b6f-86aa-1f35837a2c98
+DELETE {{baseUrl}}/projects/28e62bd7-3bcb-4e21-93a4-1522a4d299c1
 
 ---
 
@@ -70,22 +70,22 @@ Content-Type: application/json
     "description": "This is a new task",
     "status": "pending",
     "assigned_to": "132c98ca-0a8d-4d96-b8c6-cc59fec7a326",
-    "project_id": "2b16d53a-66c2-4b6f-86aa-1f35837a2c98"
+    "project_id": "28e62bd7-3bcb-4e21-93a4-1522a4d299c1"
 }
 ### Get all tasks
 GET {{baseUrl}}/tasks
 ### Get task by ID
-GET {{baseUrl}}/tasks/1
+GET {{baseUrl}}/tasks/4d5bc448-8dcb-43ba-893c-366a7c9e0763
 ### Update task by ID
-PUT {{baseUrl}}/tasks/1
+PUT {{baseUrl}}/tasks/4d5bc448-8dcb-43ba-893c-366a7c9e0763
 Content-Type: application/json
 
 {
     "title": "Updated Task",
-    "status": "in-progress"
+    "status": "in_progress"
 }
 ### Update task by ID, failing case
-PUT {{baseUrl}}/tasks/1
+PUT {{baseUrl}}/tasks/4d5bc448-8dcb-43ba-893c-366a7c9e0763
 Content-Type: application/json
 
 {
@@ -93,7 +93,7 @@ Content-Type: application/json
     "status": "pending"
 }
 ### Delete task by ID
-DELETE {{baseUrl}}/tasks/1
+DELETE {{baseUrl}}/tasks/4d5bc448-8dcb-43ba-893c-366a7c9e0763
 
 ---
 
@@ -105,29 +105,39 @@ Content-Type: application/json
 
 {
     "body": "Test comment",
-    "task": 1,
-    "author": 1
+    "task_id": "4d5bc448-8dcb-43ba-893c-366a7c9e0763",
+    "author_id": "132c98ca-0a8d-4d96-b8c6-cc59fec7a326"
 }
 ### Get all comments
 GET {{baseUrl}}/comments
 ### Get comment by ID
-GET {{baseUrl}}/comments/1
+GET {{baseUrl}}/comments/097f4428-fc99-4d3a-ba8a-c4f223413e2d
 ### Update comment by ID
-PUT {{baseUrl}}/comments/1
+PUT {{baseUrl}}/comments/097f4428-fc99-4d3a-ba8a-c4f223413e2d
 Content-Type: application/json
 
 {
     "body": "Updated comment"
 }
 ### Delete comment by ID
-DELETE {{baseUrl}}/comments/1
+DELETE {{baseUrl}}/comments/097f4428-fc99-4d3a-ba8a-c4f223413e2d
 
 ### User-Project Association
 POST {{baseUrl}}/usersProjects
 Content-Type: application/json
 
 {
-    "userId": 1,
-    "projectId": 1
+    "userId": "132c98ca-0a8d-4d96-b8c6-cc59fec7a326",
+    "projectId": "28e62bd7-3bcb-4e21-93a4-1522a4d299c1"
 }
 // Put id on / and role on {}
+
+GET {{baseUrl}}/usersProjects
+PUT {{baseUrl}}/usersProjects/1
+Content-Type: application/json
+
+{
+    "role": "admin"
+}
+
+DELETE {{baseUrl}}/usersProjects/1

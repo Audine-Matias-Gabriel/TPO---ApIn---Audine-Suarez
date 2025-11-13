@@ -4,11 +4,13 @@ export function validateCommentCreation(data: any) {
     if (!data.body || typeof data.body !== "string" || data.body.trim() === "") {
         errors.push("Comment body is required and must be a non-empty string.");
     }
-    if (!data.taskId || typeof data.taskId !== "string") {
+    const taskId = data.taskId ?? data.task_id;
+    if (!taskId || typeof taskId !== "string") {
         errors.push("taskId is required and must be a string.");
     }
-    if (!data.userId || typeof data.userId !== "string") {
-        errors.push("userId is required and must be a string.");
+    const authorId = data.authorId ?? data.author_id ?? data.userId ?? data.user_id;
+    if (!authorId || typeof authorId !== "string") {
+        errors.push("authorId (or userId) is required and must be a string.");
     }
     return errors;
 }
