@@ -1,11 +1,11 @@
 import { Comment } from "../entities/Comment.entity";
-import AppDataSource from "../db/data-source";
-import { User } from "../entities/User.entity";
-import { Task } from "../entities/Task.entity";
+import { CommentRepository } from "../repositories/CommentRepository";
+import { UserRepository } from "../repositories/UserRepository";
+import { TaskRepository } from "../repositories/TaskRepository";
 
-const commentRepository = AppDataSource.getRepository(Comment);
-const userRepository = AppDataSource.getRepository(User);
-const taskRepository = AppDataSource.getRepository(Task);
+const commentRepository = new CommentRepository();
+const userRepository = new UserRepository();
+const taskRepository = new TaskRepository();
 
 export const commentsService = {
     async create(commentData: any) {
@@ -20,58 +20,58 @@ export const commentsService = {
             throw new Error('taskId is required');
         }
 
-        const author = await userRepository.findOne({ where: { id: authorId } });
+        const author = await userRepository.findById(authorId);
         if (!author) {
             throw new Error('Author (User) not found');
         }
 
-        const task = await taskRepository.findOne({ where: { id: taskId } });
+        const task = await taskRepository.findById(taskId);
         if (!task) {
             throw new Error('Task not found');
         }
 
-        const comment = commentRepository.create({
+        const payload: Partial<Comment> = {
             body: commentData.body,
             author: author,
             task: task,
-        });
+        };
 
-        return commentRepository.save(comment);
+        return commentRepository.createOne(payload);
     },
 
     async findAll() {
-        return commentRepository.find({ relations: ['author', 'task'] });
+        return commentRepository.findAll();
     },
 
     async findById(id: string) {
-        return commentRepository.findOne({ where: { id }, relations: ['author', 'task'] });
+        return commentRepository.findById(id);
     },
 
     async update(id: string, updateData: any) {
-        const existing = await commentRepository.findOne({ where: { id } });
+        const existing = await commentRepository.findById(id);
         if (!existing) return null;
 
-        if (updateData.body !== undefined) existing.body = updateData.body;
+        const payload: any = {};
+        if (updateData.body !== undefined) payload.body = updateData.body;
 
         if (updateData.authorId || updateData.author_id || updateData.userId || updateData.user_id) {
             const authorId = updateData.authorId ?? updateData.author_id ?? updateData.userId ?? updateData.user_id;
-            const author = await userRepository.findOne({ where: { id: authorId } });
+            const author = await userRepository.findById(authorId);
             if (!author) throw new Error('Author (User) not found');
-            existing.author = author;
+            payload.author = author;
         }
 
         if (updateData.taskId || updateData.task_id) {
             const taskId = updateData.taskId ?? updateData.task_id;
-            const task = await taskRepository.findOne({ where: { id: taskId } });
+            const task = await taskRepository.findById(taskId);
             if (!task) throw new Error('Task not found');
-            existing.task = task;
+            payload.task = task;
         }
 
-        await commentRepository.save(existing);
-        return commentRepository.findOne({ where: { id }, relations: ['author', 'task'] });
+        return commentRepository.updateOne(id, payload);
     },
 
     async delete(id: string) {
-        return commentRepository.delete(id);
+        return commentRepository.deleteOne(id);
     }
 };

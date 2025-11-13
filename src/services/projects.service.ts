@@ -1,28 +1,26 @@
 import { Project } from '../entities/Project.entity';
-import AppDataSource from '../db/data-source';
+import { ProjectRepository } from '../repositories/ProjectRepository';
 
-const projectRepository = AppDataSource.getRepository(Project);
+const projectRepository = new ProjectRepository();
 
 export const projectsService = {
     async create(projectData: Partial<Project>) {
-        const project = projectRepository.create(projectData);
-        return projectRepository.save(project);
+        return projectRepository.createOne(projectData);
     },
 
     async findAll() {
-        return projectRepository.find();
+        return projectRepository.findAll();
     },
 
     async findById(id: string) {
-        return projectRepository.findOne({ where: { id } });
+        return projectRepository.findById(id);
     },
 
     async update(id: string, updateData: Partial<Project>) {
-        await projectRepository.update(id, updateData);
-        return projectRepository.findOne({ where: { id } });
+        return projectRepository.updateOne(id, updateData);
     },
 
     async delete(id: string) {
-        return projectRepository.delete(id);
-    }
+        return projectRepository.deleteOne(id);
+    },
 };

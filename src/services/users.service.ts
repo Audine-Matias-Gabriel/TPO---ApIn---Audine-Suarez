@@ -1,42 +1,39 @@
 import { User } from '../entities/User.entity';
-import AppDataSource from '../db/data-source';
 import { validateUserEmail } from '../validators/users.validator';
-//import bcrypt from 'bcrypt';
+import { UserRepository } from '../repositories/UserRepository';
 
-const userRepository = AppDataSource.getRepository(User);
+const userRepository = new UserRepository();
 
 export const usersService = {
 
     async create(userData: Partial<User>) {
-        //if (userData.password) {userData.password = await bcrypt.hash(userData.password, 10);}
         if (!userData.email) {
-            throw new Error("Email is required");
+            throw new Error('Email is required');
         }
         if (validateUserEmail(userData.email).length != 0) {
-            throw new Error("Invalid email format");
+            throw new Error('Invalid email format');
         }
-        const existingUser = await userRepository.findOne({ where: { email: userData.email } });
+        const existingUser = await userRepository.findByEmail(userData.email);
         if (existingUser) {
-            throw new Error("Email already in use");
+            throw new Error('Email already in use');
         }
-        const user = userRepository.create(userData);
-        return userRepository.save(user);
+        const user = await userRepository.createOne(userData as User);
+        return user;
     },
 
     async findAll() {
-        return userRepository.find();
+        return userRepository.findAll();
     },
 
     async findById(id: string) {
-        return userRepository.findOne({ where: { id } });
+        return userRepository.findById(id);
     },
 
     async update(id: string, updateData: Partial<User>) {
-        await userRepository.update(id, updateData);
-        return userRepository.findOne({ where: { id } });
+        return userRepository.updateOne(id, updateData);
     },
 
     async delete(id: string) {
-        return userRepository.delete(id);
+        return userRepository.deleteOne(id);
     },
-}
+};
