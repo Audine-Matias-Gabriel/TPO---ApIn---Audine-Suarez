@@ -8,7 +8,7 @@ GET {{baseUrl}}/docs
 ### Create a new user
 GET {{baseUrl}}/users
 ### Get user by ID
-GET {{baseUrl}}/users/1
+GET {{baseUrl}}/users/132c98ca-0a8d-4d96-b8c6-cc59fec7a326
 ### Create a new user
 POST {{baseUrl}}/users
 Content-Type: application/json
@@ -17,9 +17,10 @@ Content-Type: application/json
     "name": "Alfonso",
     "email": "alfonso@gmail.com",
     "password": "password"
-} // Don't return password
+} 
+// Don't return password
 ### Update user by ID
-PUT {{baseUrl}}/users/1
+PUT {{baseUrl}}/users/132c98ca-0a8d-4d96-b8c6-cc59fec7a326
 Content-Type: application/json
 
 {
@@ -27,7 +28,7 @@ Content-Type: application/json
     "password": "newpassword"
 }
 ### Delete user by ID
-DELETE {{baseUrl}}/users/1
+DELETE {{baseUrl}}/users/132c98ca-0a8d-4d96-b8c6-cc59fec7a326
 
 ---
 
@@ -44,9 +45,9 @@ Content-Type: application/json
 ### Get all projects
 GET {{baseUrl}}/projects
 ### Get project by ID
-GET {{baseUrl}}/projects/1
+GET {{baseUrl}}/projects/2b16d53a-66c2-4b6f-86aa-1f35837a2c98
 ### Update project by ID
-PUT {{baseUrl}}/projects/1
+PUT {{baseUrl}}/projects/2b16d53a-66c2-4b6f-86aa-1f35837a2c98
 Content-Type: application/json
 
 {
@@ -54,7 +55,7 @@ Content-Type: application/json
     "description": "New description"
 }
 ### Delete project by ID
-DELETE {{baseUrl}}/projects/1
+DELETE {{baseUrl}}/projects/2b16d53a-66c2-4b6f-86aa-1f35837a2c98
 
 ---
 
@@ -68,8 +69,8 @@ Content-Type: application/json
     "title": "New Task",
     "description": "This is a new task",
     "status": "pending",
-    "assignedTo": 1,
-    "projectId": 1
+    "assigned_to": "132c98ca-0a8d-4d96-b8c6-cc59fec7a326",
+    "project_id": "2b16d53a-66c2-4b6f-86aa-1f35837a2c98"
 }
 ### Get all tasks
 GET {{baseUrl}}/tasks
@@ -129,3 +130,4 @@ Content-Type: application/json
     "userId": 1,
     "projectId": 1
 }
+// Put id on / and role on {}

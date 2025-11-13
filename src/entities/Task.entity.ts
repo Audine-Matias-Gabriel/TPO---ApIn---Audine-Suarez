@@ -5,12 +5,13 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     ManyToOne,
+    JoinColumn,
 } from "typeorm";
 
 import { User } from "./User.entity";
 import { Project } from "./Project.entity";
 
-@Entity()
+@Entity('tasks')
 export class Task {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
@@ -24,18 +25,20 @@ export class Task {
     @Column({ type: "varchar", default: "pending" })
     status!: "pending" | "in-progress" | "completed" | "cancelled";
 
-    @CreateDateColumn()
+    @CreateDateColumn({ name: "created_at" })
     createdAt!: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ name: "last_updated" })
     lastUpdated!: Date;
 
-    @Column({ type: "timestamp", nullable: true })
+    @Column({ type: "timestamp", nullable: true, name: "due_date" })
     dueDate!: Date | null;
 
     @ManyToOne(() => User, user => user.id, { nullable: true })
+    @JoinColumn({ name: "assigned_to" })
     assignedTo!: User | null;
 
     @ManyToOne(() => Project, project => project.id)
+    @JoinColumn({ name: "project_id" })
     project!: Project;
 }

@@ -7,6 +7,7 @@ import { usersRouter } from './routes/users.route';
 import { projectsRouter } from './routes/projects.route';
 import { tasksRouter } from './routes/tasks.route';
 import { commentsRouter } from './routes/comments.route';
+import { userProjectRouter } from './routes/usersprojects.route';
 
 
 export function createApp() {
@@ -23,6 +24,7 @@ export function createApp() {
 	app.use("/projects", projectsRouter);
 	app.use("/tasks", tasksRouter);
 	app.use("/comments", commentsRouter);
+	app.use("/usersProjects", userProjectRouter);
 
 	return app;
 }

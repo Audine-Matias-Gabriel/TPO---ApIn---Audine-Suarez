@@ -4,12 +4,13 @@ import {
     Column,
     CreateDateColumn,
     ManyToOne,
+    JoinColumn,
 } from "typeorm";
 
 import { User } from "./User.entity";
 import { Task } from "./Task.entity";
 
-@Entity()
+@Entity('comments')
 export class Comment {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
@@ -17,12 +18,14 @@ export class Comment {
     @Column({ type: "text" })
     body!: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ name: "created_at" })
     createdAt!: Date;
 
     @ManyToOne(() => User, user => user.id, { nullable: false })
+    @JoinColumn({ name: "author_id" })
     author!: User;
 
     @ManyToOne(() => Task, task => task.id, { nullable: false })
+    @JoinColumn({ name: "task_id" })
     task!: Task;
 }

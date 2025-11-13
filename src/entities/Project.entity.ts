@@ -8,7 +8,7 @@ import {
 
 import { UserProject } from "./UserProject.entity";
 
-@Entity()
+@Entity('projects')
 export class Project {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
@@ -16,7 +16,7 @@ export class Project {
     @Column({ type: "varchar" })
     name!: string;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ name: "created_at" })
     createdAt!: Date;
 
     @Column({ type: "varchar", nullable: true })
