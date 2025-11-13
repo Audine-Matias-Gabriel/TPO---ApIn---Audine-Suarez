@@ -17,8 +17,7 @@ Content-Type: application/json
     "name": "Alfonso",
     "email": "alfonso@gmail.com",
     "password": "password"
-} 
-// Don't return password
+}
 ### Update user by ID
 PUT {{baseUrl}}/users/132c98ca-0a8d-4d96-b8c6-cc59fec7a326
 Content-Type: application/json
@@ -111,18 +110,20 @@ Content-Type: application/json
 ### Get all comments
 GET {{baseUrl}}/comments
 ### Get comment by ID
-GET {{baseUrl}}/comments/097f4428-fc99-4d3a-ba8a-c4f223413e2d
+GET {{baseUrl}}/comments/a62af9f3-5d82-4f9b-9558-2d2dbfecfaf6
 ### Update comment by ID
-PUT {{baseUrl}}/comments/097f4428-fc99-4d3a-ba8a-c4f223413e2d
+PUT {{baseUrl}}/comments/a62af9f3-5d82-4f9b-9558-2d2dbfecfaf6
 Content-Type: application/json
 
 {
     "body": "Updated comment"
 }
 ### Delete comment by ID
-DELETE {{baseUrl}}/comments/097f4428-fc99-4d3a-ba8a-c4f223413e2d
+DELETE {{baseUrl}}/comments/a62af9f3-5d82-4f9b-9558-2d2dbfecfaf6
 
 ### User-Project Association
+
+### Create a new user-project association
 POST {{baseUrl}}/usersProjects
 Content-Type: application/json
 
@@ -130,14 +131,27 @@ Content-Type: application/json
     "userId": "132c98ca-0a8d-4d96-b8c6-cc59fec7a326",
     "projectId": "28e62bd7-3bcb-4e21-93a4-1522a4d299c1"
 }
-// Put id on / and role on {}
-
+### Get all user-project associations
 GET {{baseUrl}}/usersProjects
-PUT {{baseUrl}}/usersProjects/1
+### Get user-project association by ID
+GET {{baseUrl}}/usersProjects/7462e856-542d-46c2-b417-b8d5d737e9a6
+### Get user-project association by project&user id
+GET {{baseUrl}}/usersProjects/28e62bd7-3bcb-4e21-93a4-1522a4d299c1/132c98ca-0a8d-4d96-b8c6-cc59fec7a326
+### Update user-project association by ID
+PUT {{baseUrl}}/usersProjects/7462e856-542d-46c2-b417-b8d5d737e9a6
 Content-Type: application/json
 
 {
-    "role": "admin"
+    "role": "owner"
 }
+### Update user-project association by project&user id
+PUT {{baseUrl}}/usersProjects/28e62bd7-3bcb-4e21-93a4-1522a4d299c1/132c98ca-0a8d-4d96-b8c6-cc59fec7a326
+Content-Type: application/json
 
-DELETE {{baseUrl}}/usersProjects/1
+{
+    "role": "owner"
+}
+### Delete user-project association by ID
+DELETE {{baseUrl}}/usersProjects/7462e856-542d-46c2-b417-b8d5d737e9a6
+### Delete user-project association by project&user id
+DELETE {{baseUrl}}/usersProjects/28e62bd7-3bcb-4e21-93a4-1522a4d299c1/132c98ca-0a8d-4d96-b8c6-cc59fec7a326

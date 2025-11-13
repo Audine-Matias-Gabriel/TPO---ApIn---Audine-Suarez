@@ -39,5 +39,68 @@ export const usersProjectsService = {
         userProject.role = (['owner', 'member'].includes(role) ? role : 'member') as 'owner' | 'member';
 
         return userProjectRepo.save(userProject);
-    }
+    },
+
+    async findAll() {
+        return userProjectRepo.find({ relations: ['user', 'project'] });
+    },
+
+    async findById(id: string) {
+        return userProjectRepo.findOne({ where: { id }, relations: ['user', 'project'] });
+    },
+
+    async findByProjectAndUser(projectId: string, userId: string) {
+        return userProjectRepo.findOne({
+            where: {
+                project: { id: projectId },
+                user: { id: userId },
+            },
+            relations: ['user', 'project'],
+        });
+    },
+
+    async update(id: string, updateData: any) {
+        const existing = await userProjectRepo.findOne({ where: { id }, relations: ['user', 'project'] });
+        if (!existing) return null;
+        if (updateData.role) {
+            if (!['owner', 'member'].includes(updateData.role)) {
+                throw new Error('Invalid role specified');
+            }
+            existing.role = updateData.role;
+        }
+        return userProjectRepo.save(existing);
+    },
+
+    async updateByProjectAndUser(projectId: string, userId: string, updateData: any) {
+        const existing = await userProjectRepo.findOne({
+            where: {
+                project: { id: projectId },
+                user: { id: userId },
+            },
+            relations: ['user', 'project'],
+        });
+        if (!existing) return null;
+        if (updateData.role) {
+            if (!['owner', 'member'].includes(updateData.role)) {
+                throw new Error('Invalid role specified');
+            }
+            existing.role = updateData.role;
+        }
+        return userProjectRepo.save(existing);
+    },
+
+    async delete(id: string) {
+        return userProjectRepo.delete(id);
+    },
+
+    async deleteByProjectAndUser(projectId: string, userId: string) {
+        const existing = await userProjectRepo.findOne({
+            where: {
+                project: { id: projectId },
+                user: { id: userId },
+            }
+        });
+        if (!existing) return { affected: 0 };
+        return userProjectRepo.delete(existing.id);
+    },
 }
