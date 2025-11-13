@@ -79,14 +79,14 @@ export function Tasks() {
         </div>
       </header>
 
-      <section className="tasks-filters">
+      {/* <section className="tasks-filters">
         <div className="filter-row">
           <div className="filter-item">Equipo [Todos ▾]</div>
           <div className="filter-item">🔍 <input placeholder="Buscar..." /></div>
           <div className="filter-item">Estado [Todos ▾]</div>
           <div className="filter-item">Prioridad [Todas ▾]</div>
         </div>
-      </section>
+      </section> */}
 
       <section className="tasks-list">
         {loading ? (

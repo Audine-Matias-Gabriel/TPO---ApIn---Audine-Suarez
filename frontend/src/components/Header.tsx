@@ -28,11 +28,11 @@ export function Header({ currentUser }: { currentUser: User | null }) {
           <Link to="/" className={`nav-link ${isActive('/')}`}>
             📊 Dashboard
           </Link>
-          <Link to="/tasks" className={`nav-link ${isActive('/tasks')}`}>
-            ✓ Tasks
-          </Link>
           <Link to="/projects" className={`nav-link ${isActive('/projects')}`}>
             📁 Projects
+          </Link>
+          <Link to="/tasks" className={`nav-link ${isActive('/tasks')}`}>
+            ✓ Tasks
           </Link>
           <Link to="/activity" className={`nav-link ${isActive('/activity')}`}>
             📈 Activity

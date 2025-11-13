@@ -8,6 +8,7 @@ import { projectsRouter } from './routes/projects.route';
 import { tasksRouter } from './routes/tasks.route';
 import { commentsRouter } from './routes/comments.route';
 import { userProjectRouter } from './routes/usersprojects.route';
+import { activityRouter } from './routes/activity.routes';
 
 
 export function createApp() {
@@ -25,6 +26,7 @@ export function createApp() {
 	app.use("/tasks", tasksRouter);
 	app.use("/comments", commentsRouter);
 	app.use("/usersProjects", userProjectRouter);
+	app.use("/activity", activityRouter);
 
 	return app;
 }
