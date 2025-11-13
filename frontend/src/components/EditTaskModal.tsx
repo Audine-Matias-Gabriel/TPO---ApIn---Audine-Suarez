@@ -1,36 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import api from '@/utils/api';
-import './CreateTaskModal.css';
+import './EditTaskModal.css';
 
-type Props = {
-  creatorId?: string | null;
-  onClose: () => void;
-  onCreated: (task: any) => void;
+type Task = {
+  id: string;
+  title: string;
+  description?: string;
+  status?: string;
+  priority?: string;
+  dueDate?: string | null;
+  assignedTo?: { id: string; name: string } | null;
 };
 
-export const CreateTaskModal: React.FC<Props> = ({ creatorId, onClose, onCreated }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [status, setStatus] = useState('pending');
-  const [priority, setPriority] = useState('medium');
-  const [dueDate, setDueDate] = useState<string>('');
-  const [assignedTo, setAssignedTo] = useState<string | null>(null);
-  const [projectId, setProjectId] = useState<string | null>(null);
-  const [tags, setTags] = useState('');
+type Props = {
+  task: Task;
+  onClose: () => void;
+  onUpdated: (task: Task) => void;
+};
+
+export const EditTaskModal: React.FC<Props> = ({ task, onClose, onUpdated }) => {
+  const [title, setTitle] = useState(task.title);
+  const [description, setDescription] = useState(task.description || '');
+  const [status, setStatus] = useState(task.status || 'pending');
+  const [priority, setPriority] = useState(task.priority || 'medium');
+  const [dueDate, setDueDate] = useState<string>(
+    task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''
+  );
+  const [assignedTo, setAssignedTo] = useState<string | null>(task.assignedTo?.id || null);
 
   const [users, setUsers] = useState<Array<{ id: string; name: string }>>([]);
-  const [projects, setProjects] = useState<Array<{ id: string; name: string }>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [uRes, pRes] = await Promise.all([api.get('/users'), api.get('/projects')]);
-        setUsers(uRes.data || []);
-        setProjects(pRes.data || []);
+        const res = await api.get('/users');
+        setUsers(res.data || []);
       } catch (err) {
-        console.error('Failed to load selects', err);
+        console.error('Failed to load users', err);
       }
     };
     load();
@@ -40,7 +48,6 @@ export const CreateTaskModal: React.FC<Props> = ({ creatorId, onClose, onCreated
     e?.preventDefault();
     setError(null);
     if (!title.trim()) return setError('El título es requerido');
-    if (!projectId) return setError('El equipo/proyecto es requerido');
     setLoading(true);
     try {
       const payload: any = {
@@ -50,15 +57,12 @@ export const CreateTaskModal: React.FC<Props> = ({ creatorId, onClose, onCreated
       };
       if (dueDate) payload.dueDate = dueDate;
       if (assignedTo) payload.assignedTo = assignedTo;
-      if (projectId) payload.projectId = projectId;
-      if (tags) payload.tags = tags.split(',').map((t) => t.trim()).filter(Boolean);
-      if (creatorId) payload.creatorId = creatorId;
 
-      const res = await api.post('/tasks', payload);
-      onCreated(res.data);
+      const res = await api.put(`/tasks/${task.id}`, payload);
+      onUpdated(res.data);
     } catch (err: any) {
-      console.error('Create task failed', err);
-      setError(err?.response?.data?.message || 'Error al crear la tarea');
+      console.error('Update task failed', err);
+      setError(err?.response?.data?.message || 'Error al actualizar la tarea');
     } finally {
       setLoading(false);
     }
@@ -68,7 +72,7 @@ export const CreateTaskModal: React.FC<Props> = ({ creatorId, onClose, onCreated
     <div className="modal-backdrop">
       <div className="modal task-modal">
         <header>
-          <h3>Nueva Tarea</h3>
+          <h3>Editar Tarea</h3>
           <button className="close" onClick={onClose}>&times;</button>
         </header>
         <form onSubmit={handleSubmit}>
@@ -120,21 +124,6 @@ export const CreateTaskModal: React.FC<Props> = ({ creatorId, onClose, onCreated
             </label>
           </div>
 
-          <label>
-            Equipo *
-            <select value={projectId ?? ''} onChange={(e) => setProjectId(e.target.value || null)}>
-              <option value="">Seleccionar equipo...</option>
-              {projects.map((p) => (
-                <option key={p.id} value={p.id}>{p.name}</option>
-              ))}
-            </select>
-          </label>
-
-          <label>
-            Etiquetas (coma separadas)
-            <input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="bug, frontend, urgent" />
-          </label>
-
           {error && <div className="error">{error}</div>}
 
           <div className="actions">
@@ -151,4 +140,4 @@ export const CreateTaskModal: React.FC<Props> = ({ creatorId, onClose, onCreated
   );
 };
 
-export default CreateTaskModal;
+export default EditTaskModal;

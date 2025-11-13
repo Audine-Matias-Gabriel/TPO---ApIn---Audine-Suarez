@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '@/utils/api';
 import './Tasks.css';
 import { CreateTaskModal } from '@/components/CreateTaskModal';
+import { EditTaskModal } from '@/components/EditTaskModal';
 import { useUser } from '@/context/UserContext';
 
 type Task = {
@@ -18,6 +19,7 @@ export function Tasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
   const { currentUser } = useUser();
 
   const fetchTasks = async () => {
@@ -48,6 +50,22 @@ export function Tasks() {
   const handleCreated = (task: Task) => {
     setTasks((t) => [task, ...t]);
     setShowCreate(false);
+  };
+
+  const handleUpdated = (updated: Task) => {
+    setTasks((t) => t.map((task) => (task.id === updated.id ? updated : task)));
+    setEditingTask(null);
+  };
+
+  const handleDelete = async (taskId: string) => {
+    if (!window.confirm('¿Estás seguro de que deseas eliminar esta tarea?')) return;
+    try {
+      await api.delete(`/tasks/${taskId}`);
+      setTasks((t) => t.filter((task) => task.id !== taskId));
+    } catch (err) {
+      console.error('Delete failed', err);
+      alert('Error al eliminar la tarea');
+    }
   };
 
   return (
@@ -92,6 +110,7 @@ export function Tasks() {
                 <th>Prioridad</th>
                 <th>Vence</th>
                 <th>Asignado</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -103,6 +122,10 @@ export function Tasks() {
                   <td>{task.priority || 'Media'}</td>
                   <td>{task.dueDate ? new Date(task.dueDate).toLocaleDateString() : '—'}</td>
                   <td>{task.assignedTo?.name || '—'}</td>
+                  <td className="actions-cell">
+                    <button className="btn-small" onClick={() => setEditingTask(task)}>✏️ Editar</button>
+                    <button className="btn-small danger" onClick={() => handleDelete(task.id)}>🗑️ Eliminar</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -115,6 +138,14 @@ export function Tasks() {
           creatorId={currentUser?.id}
           onClose={() => setShowCreate(false)}
           onCreated={handleCreated}
+        />
+      )}
+
+      {editingTask && (
+        <EditTaskModal
+          task={editingTask}
+          onClose={() => setEditingTask(null)}
+          onUpdated={handleUpdated}
         />
       )}
     </div>

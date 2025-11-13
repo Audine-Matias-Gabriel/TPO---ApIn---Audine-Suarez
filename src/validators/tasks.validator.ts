@@ -5,7 +5,7 @@ export function validateTaskCreation(task: any) {
 }
 
 export function validateTaskStatusChange(currentStatus: string, newStatus: string) {
-    const validStatuses = ['pending', 'in_progress', 'completed', 'cancelled'];
+    const validStatuses = ['pending', 'in-progress', 'completed', 'cancelled'];
     const errors: string[] = [];
 
     if (!validStatuses.includes(newStatus)) {
@@ -27,11 +27,11 @@ export function validateTaskStatusChange(currentStatus: string, newStatus: strin
         return errors;
     }
 
-    if (currentStatus === 'pending' && newStatus !== 'in_progress') {
+    if (currentStatus === 'pending' && newStatus !== 'in-progress') {
         errors.push(`Invalid status transition from ${currentStatus} to ${newStatus}`);
         return errors;
     }
-    if (currentStatus === 'in_progress' && newStatus !== 'completed') {
+    if (currentStatus === 'in-progress' && newStatus !== 'completed') {
         errors.push(`Invalid status transition from ${currentStatus} to ${newStatus}`);
         return errors;
     }

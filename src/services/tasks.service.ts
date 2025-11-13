@@ -56,6 +56,7 @@ export const tasksService = {
 
         const updatePayload: any = {};
 
+        // Only update project if explicitly provided
         if (updateData.projectId || updateData.project_id) {
             const projectId = updateData.projectId ?? updateData.project_id;
             const project = await projectRepository.findById(projectId);
@@ -63,11 +64,16 @@ export const tasksService = {
             updatePayload.project = project;
         }
 
+        // Only update assignedTo if explicitly provided
         if (updateData.assignedTo || updateData.assigned_to) {
             const assignedId = updateData.assignedTo ?? updateData.assigned_to;
-            const user = await userRepository.findById(assignedId);
-            if (!user) throw new Error('Assigned user not found');
-            updatePayload.assignedTo = user;
+            if (assignedId) {
+                const user = await userRepository.findById(assignedId);
+                if (!user) throw new Error('Assigned user not found');
+                updatePayload.assignedTo = user;
+            } else {
+                updatePayload.assignedTo = null;
+            }
         }
 
         if (updateData.title !== undefined) updatePayload.title = updateData.title;

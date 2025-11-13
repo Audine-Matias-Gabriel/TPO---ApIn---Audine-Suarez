@@ -11,3 +11,7 @@
 .tasks-table thead { background:#fafafa; }
 .btn { padding:8px 12px; border-radius:6px; border:1px solid #ccc; background:#fff; cursor:pointer; }
 .btn.primary { background:#2563eb; color:#fff; border-color:#2563eb; }
+.actions-cell { display:flex; gap:6px; }
+.btn-small { padding:4px 8px; font-size:12px; border-radius:4px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+.btn-small.danger { color:#b00020; border-color:#b00020; }
+.btn-small:hover { background:#f0f0f0; }
