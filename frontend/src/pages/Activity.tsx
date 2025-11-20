@@ -21,7 +21,7 @@ export function Activity() {
     const fetchActivity = async () => {
       try {
         setLoading(true);
-        const res = await api.get<ActivityEvent[]>('/api/activity');
+        const res = await api.get<ActivityEvent[]>('/activity');
         setEvents(res.data);
         setError(null);
       } catch (err: any) {
