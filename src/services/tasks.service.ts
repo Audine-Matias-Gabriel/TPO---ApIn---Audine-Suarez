@@ -50,6 +50,10 @@ export const tasksService = {
         return taskRepository.findById(id);
     },
 
+    async findByUserId(userId: string) {
+        return taskRepository.findByUserId(userId);
+    },
+
     async update(id: string, updateData: any) {
         const existing = await taskRepository.findById(id);
         if (!existing) return null;

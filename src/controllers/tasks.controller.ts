@@ -76,6 +76,15 @@ export async function getTaskByIdController(req: Request, res: Response) {
     res.json(task);
 }
 
+export async function getTaskByUserIdController(req: Request, res: Response) {
+    const { userid } = req.params;
+    if (!userid) {
+        return res.status(400).json({ error: "User id is required" });
+    }
+    const tasks = await tasksService.findByUserId(userid);
+    res.json(tasks);
+}
+
 export async function deleteTaskController(req: Request, res: Response) {
     const { id } = req.params;
     if (!id) {

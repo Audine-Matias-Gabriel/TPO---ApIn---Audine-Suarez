@@ -17,6 +17,10 @@ export class TaskRepository {
     return this.repository.findOne({ where: { id }, relations: ['project', 'assignedTo'] });
   }
 
+  findByUserId(userId: string): Promise<Task[]> {
+    return this.repository.find({ where: { assignedTo: { id: userId } }, relations: ['project', 'assignedTo'] });
+  }
+
   async createOne(data: Partial<Task>): Promise<Task> {
     const entity = this.repository.create(data as Task);
     return this.repository.save(entity);
