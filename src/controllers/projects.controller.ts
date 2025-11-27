@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { projectsService } from "../services/projects.service";
+import { usersProjectsService } from "../services/usersprojects.service";
 import { validateProjectCreation, validateProjectUpdate } from "../validators/projects.validator";
 
 export async function createProjectController(req: Request, res: Response) {
@@ -35,6 +36,17 @@ export async function updateProjectController(req: Request, res: Response) {
 export async function getAllProjectsController(req: Request, res: Response) {
     const projects = await projectsService.findAll();
     res.json(projects);
+}
+
+export async function getProjectsByUserController(req: Request, res: Response) {
+    const { userId } = req.params;
+    if (!userId) {
+        return res.status(400).json({ error: "User id is required" });
+    }
+    const allProjects = await projectsService.findAll();
+    const allUserProjects = await usersProjectsService.findAll();
+    //const userProjects = ;
+    res.json();
 }
 
 export async function getProjectByIdController(req: Request, res: Response) {

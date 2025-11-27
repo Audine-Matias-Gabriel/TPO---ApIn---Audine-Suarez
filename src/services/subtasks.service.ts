@@ -33,17 +33,18 @@ export const subtasksService = {
     },
 
     async getByTaskId(taskId: string) {
-        const task = await taskRepository.findById(taskId);
-        if (!task) {
-            throw new Error('Task not found');
+        console.log('subtasksService.getByTaskId called with taskId:', taskId);
+        const subtask = await subtaskRepository.findByTaskId(taskId);
+        if (!subtask) {
+            throw new Error('Subtask not found');
         }
-        return task.subtasks;
+        return subtask;
     },
 
     async delete(subtaskId: string) {
         const subtask = await subtaskRepository.findById(subtaskId);
         if (!subtask) {
-            throw new Error('Subtask not found');
+            throw new Error('Task not found');
         }
         await subtaskRepository.deleteOne(subtaskId);
     },

@@ -11,7 +11,7 @@ import {
 
 import { Task } from "./Task.entity";
 
-@Entity()
+@Entity("subtasks")
 @Unique(["task", "order"]) // order must be unique inside a task
 export class Subtask {
     @PrimaryGeneratedColumn("uuid")
@@ -34,8 +34,8 @@ export class Subtask {
     order!: number;
 
     @CreateDateColumn()
-    createdAt!: Date;
+    created_at!: Date;
 
     @UpdateDateColumn()
-    updatedAt!: Date;
+    updated_at!: Date;
 }

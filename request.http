@@ -96,6 +96,30 @@ DELETE {{baseUrl}}/tasks/4d5bc448-8dcb-43ba-893c-366a7c9e0763
 ### Get tasks by user ID
 GET {{baseUrl}}/tasks/user/132c98ca-0a8d-4d96-b8c6-cc59fec7a326
 
+---
+
+### Subtask
+### Create a new subtask
+POST {{baseUrl}}/subtasks
+Content-Type: application/json
+
+{
+    "title": "New Subtask 2",
+    "task_id": "4d5bc448-8dcb-43ba-893c-366a7c9e0763",
+    "order": 2
+}
+### Get subtasks by task ID
+GET {{baseUrl}}/subtasks/task/4d5bc448-8dcb-43ba-893c-366a7c9e0763
+### Update subtask by ID
+PUT {{baseUrl}}/subtasks/8545da6f-95dc-4396-91f2-5966933b415f
+Content-Type: application/json
+
+{
+    "title": "Updated Subtask",
+    "order": 3
+}
+### Delete subtask by ID
+DELETE {{baseUrl}}/subtasks/42e1ed41-e9e5-48a8-8129-02848e3154a6
 
 ---
 

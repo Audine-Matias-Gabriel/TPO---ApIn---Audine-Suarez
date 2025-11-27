@@ -16,6 +16,10 @@ export class SubtaskRepository {
         return this.repository.findOne({ where: { id } });
     }
 
+    async findByTaskId(taskId: string): Promise<Subtask[]> {
+        return this.repository.find({ where: { task: { id: taskId } }, order: { order: "ASC" } });
+    }
+
     async createOne(data: Partial<Subtask>): Promise<Subtask> {
         const entity = this.repository.create(data);
         return this.repository.save(entity);

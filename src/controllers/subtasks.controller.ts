@@ -13,6 +13,7 @@ export async function createSubtaskController(req: Request, res: Response) {
 
 export async function getSubtasksByTaskIdController(req: Request, res: Response) {
     try {
+        console.log('Getting subtasks for task ID:', req.params.taskId);
         const taskId = req.params.taskId;
         if (!taskId) {
             res.status(400).json({ message: 'Task ID is required' });
