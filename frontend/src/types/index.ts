@@ -29,6 +29,17 @@ export interface Task {
   project: Project;
 }
 
+export interface Subtask {
+  id: string;
+  task: Task;
+  title: string;
+  description?: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  order: number;
+  created_at: string;
+  updated_at: string;
+}
+
 // Comment type
 export interface Comment {
   id: string;
