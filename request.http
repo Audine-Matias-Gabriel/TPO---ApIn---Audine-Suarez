@@ -93,6 +93,9 @@ Content-Type: application/json
 }
 ### Delete task by ID
 DELETE {{baseUrl}}/tasks/4d5bc448-8dcb-43ba-893c-366a7c9e0763
+### Get tasks by user ID
+GET {{baseUrl}}/tasks/user/132c98ca-0a8d-4d96-b8c6-cc59fec7a326
+
 
 ---
 

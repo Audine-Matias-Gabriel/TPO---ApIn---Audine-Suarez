@@ -23,11 +23,20 @@ export function Tasks() {
   const { currentUser } = useUser();
 
   const fetchTasks = async () => {
+
+    if (!currentUser) {
+      console.warn('[Tasks] No user selected, skipping fetch');
+      setLoading(false);
+      return;
+    }
+
     console.log('[Tasks] fetchTasks start');
+    console.log('[Tasks] Fetching tasks for user', currentUser.id);
     setLoading(true);
     // Add a timeout guard so the UI doesn't spin forever if the request hangs
     const timeout = 10000; // 10s
-    const fetchPromise = api.get('/tasks');
+    console.log('/tasks/user/' + currentUser?.id);
+    const fetchPromise = api.get('/tasks/user/' + currentUser?.id);
     const timeoutPromise = new Promise((_res, rej) => setTimeout(() => rej(new Error('timeout')), timeout));
 
     try {
@@ -44,8 +53,13 @@ export function Tasks() {
   };
 
   useEffect(() => {
+    if (!currentUser) {
+      console.log('[Tasks] No user selected, skipping fetch');
+      return;
+    }
+    console.log('[Tasks] User selected, fetching tasks for user', currentUser.id);
     fetchTasks();
-  }, []);
+  }, [currentUser]);
 
   const handleCreated = (task: Task) => {
     setTasks((t) => [task, ...t]);

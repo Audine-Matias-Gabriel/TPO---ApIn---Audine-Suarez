@@ -14,7 +14,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUserState] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load user from localStorage on mount
   useEffect(() => {
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
@@ -45,7 +44,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     isUserSelected: currentUser !== null,
   };
 
-  // Don't render children until we've checked localStorage
   if (isLoading) {
     return <div style={{ display: 'none' }} />;
   }

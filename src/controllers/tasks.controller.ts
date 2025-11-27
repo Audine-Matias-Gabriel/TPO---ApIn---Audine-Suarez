@@ -77,11 +77,15 @@ export async function getTaskByIdController(req: Request, res: Response) {
 }
 
 export async function getTaskByUserIdController(req: Request, res: Response) {
-    const { userid } = req.params;
-    if (!userid) {
+    console.log('[getTaskByUserIdController] req.params =', req.params);
+    const { assignedTo } = req.params;
+    console.log('[getTaskByUserIdController] assignedTo =', assignedTo);
+    console.log("[getTaskByUserIdController] PATH:", req.path);
+    console.log("[getTaskByUserIdController] PARAMS:", req.params);
+    if (!assignedTo) {
         return res.status(400).json({ error: "User id is required" });
     }
-    const tasks = await tasksService.findByUserId(userid);
+    const tasks = await tasksService.findByUserId(assignedTo);
     res.json(tasks);
 }
 

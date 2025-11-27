@@ -3,10 +3,10 @@ import { SubtaskRepository } from "../repositories/SubtaskRepository";
 import { TaskRepository } from "../repositories/TaskRepository";
 
 const subtaskRepository = new SubtaskRepository();
+const taskRepository = new TaskRepository();
 
 export const subtasksService = {
     async create(subtaskData: any) {
-        const taskRepository = new TaskRepository();
         const task = await taskRepository.findById(subtaskData.taskId);
         if (!task) {
             throw new Error('Task not found');
@@ -32,5 +32,29 @@ export const subtasksService = {
         return subtaskRepository.createOne(payload);
     },
 
+    async getByTaskId(taskId: string) {
+        const task = await taskRepository.findById(taskId);
+        if (!task) {
+            throw new Error('Task not found');
+        }
+        return task.subtasks;
+    },
+
+    async delete(subtaskId: string) {
+        const subtask = await subtaskRepository.findById(subtaskId);
+        if (!subtask) {
+            throw new Error('Subtask not found');
+        }
+        await subtaskRepository.deleteOne(subtaskId);
+    },
+
+    async update(subtaskId: string, updateData: any) {
+        const subtask = await subtaskRepository.findById(subtaskId);
+        if (!subtask) {
+            throw new Error('Subtask not found');
+        }
+        Object.assign(subtask, updateData);
+        return subtaskRepository.createOne(subtask);
+    },
 
 };
