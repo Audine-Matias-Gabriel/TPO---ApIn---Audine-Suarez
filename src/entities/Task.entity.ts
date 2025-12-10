@@ -2,43 +2,62 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
+    ManyToMany,
+    JoinTable,
+    ManyToOne,
     CreateDateColumn,
     UpdateDateColumn,
-    ManyToOne,
-    JoinColumn,
+    Unique
 } from "typeorm";
 
-import { User } from "./User.entity";
-import { Project } from "./Project.entity";
+import { Tag } from "./tag.entity";
+import { User } from "./user.entity";
+import { Team } from "./team.entity";
 
-@Entity('tasks')
-export class Task {
-    @PrimaryGeneratedColumn("uuid")
-    id!: string;
+export enum Priority {
+    HIGH = "HIGH",
+    MEDIUM = "MEDIUM",
+    LOW = "LOW",
+}
 
-    @Column({ type: "varchar" })
-    title!: string;
+@Entity('task_templates')
+@Unique(["name","creatorId"])
+export class TaskTemplate {
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-    @Column({ type: "varchar", nullable: true })
-    description!: string | null;
+    @Column()
+    name: string;
+    
+    @Column({type:"text", nullable: true})
+    description?: string;
 
-    @Column({ type: "varchar", default: "pending" })
-    status!: "pending" | "in-progress" | "completed" | "cancelled";
+    @Column({type:"enum", enum: Priority, default: Priority.MEDIUM})
+    priority: Priority;
 
-    @CreateDateColumn({ name: "created_at" })
-    createdAt!: Date;
+    @Column({nullable: true })
+    teamId?: number;
 
-    @UpdateDateColumn({ name: "last_updated" })
-    lastUpdated!: Date;
+    @ManyToOne(() => Team, { nullable: true, onDelete: "SET NULL"})
+    team?: Team;
 
-    @Column({ type: "timestamp", nullable: true, name: "due_date" })
-    dueDate!: Date | null;
+    @Column()
+    creatorId: number;
 
-    @ManyToOne(() => User, user => user.id, { nullable: true })
-    @JoinColumn({ name: "assigned_to" })
-    assignedTo!: User | null;
+    @ManyToOne(() => User, { nullable: false, onDelete: "CASCADE"})
+    creator: User;
 
-    @ManyToOne(() => Project, project => project.id)
-    @JoinColumn({ name: "project_id" })
-    project!: Project;
+    @ManyToMany(() => Tag, { eager: true})
+    @JoinTable({
+        name: "task_template_tags",
+        joinColumn: {name: "tempplateId"},
+        inverseJoinColumn: {name: "tagId"},
+    })
+    tags: Tag[];
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
