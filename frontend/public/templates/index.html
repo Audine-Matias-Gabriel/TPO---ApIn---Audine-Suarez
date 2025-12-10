@@ -1,0 +1,108 @@
+<!doctype html> 
+<html> 
+<head> 
+  <meta charset="utf-8"> 
+  <title>Templates</title> 
+  <meta name="viewport" content="width=device-width,initial-scale=1"> 
+  <style> 
+    body{font-family: Arial; max-width:900px;margin:20px auto;padding:0 12px} 
+    .card{border:1px solid #eee;padding:12px;margin:8px 0;border-radius:8px;box-shadow:0 1px 
+0 rgba(0,0,0,0.03)} 
+    .priority{padding:4px 8px;border-radius:6px;font-weight:600} 
+    .priority.HIGH{background:#ffe6e6;color:#9a1b1b} 
+    .priority.MEDIUM{background:#fff4cd;color:#6a5600} 
+    .priority.LOW{background:#e6f7ff;color:#074d7f} 
+    .btn{padding:6px 
+10px;border-radius:6px;border:0;background:#0b5ed7;color:white;cursor:pointer;margin-right:6p
+x} 
+    .btn.secondary{background:#6c757d} 
+    input{padding:6px;border-radius:6px;border:1px solid #ccc} 
+  </style> 
+</head> 
+<body> 
+  <h1>Templates</h1> 
+ 
+  <div style="display:flex;gap:8px;margin-bottom:12px"> 
+    <input id="q" placeholder="Buscar..." style="flex:1"> 
+    <button id="search" class="btn secondary">Buscar</button> 
+    <button id="new" class="btn">Crear</button> 
+  </div> 
+ 
+  <div id="list"></div> 
+  <div id="empty" style="display:none;color:#777;margin-top:20px">No hay templates 
+creadas.</div> 
+ 
+<script> 
+const API = "/templates"; 
+const USER_ID = 1; 
+ 
+function escape(str){ 
+  return String(str).replace(/[&<>"']/g, c => ({ 
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;' 
+  }[c])); 
+} 
+ 
+async function load(q=""){ 
+  const url = new URL(location.origin + API); 
+  if(q) url.searchParams.set("q", q); 
+ 
+  const res = await fetch(url, { headers: { "x-user-id": USER_ID }}); 
+  const data = await res.json(); 
+  const list = data.data || data; 
+ 
+  const container = document.getElementById("list"); 
+  container.innerHTML = ""; 
+ 
+  if(list.length === 0){ 
+    document.getElementById("empty").style.display = "block"; 
+    return; 
+  } 
+ 
+  document.getElementById("empty").style.display = "none"; 
+ 
+  list.forEach(t => { 
+    const div = document.createElement("div"); 
+    div.className = "card"; 
+    div.innerHTML = ` 
+      <div style="display:flex;justify-content:space-between;align-items:center"> 
+        <div> 
+          <strong>${escape(t.name)}</strong> 
+          <div>${escape(t.description || "")}</div> 
+          <small>Team: ${t.teamId || "—"} | Tags: ${(t.tags || []).length}</small> 
+        </div> 
+        <div> 
+          <span class="priority ${t.priority}">${t.priority}</span><br><br> 
+          <button class="btn secondary" onclick="view(${t.id})">Ver</button> 
+          <button class="btn secondary" onclick="edit(${t.id})">Editar</button> 
+          <button class="btn secondary" onclick="delTpl(${t.id})">Eliminar</button> 
+          <button class="btn" onclick="apply(${t.id})">Aplicar</button> 
+        </div> 
+      </div> 
+    `; 
+    container.appendChild(div); 
+  }); 
+} 
+ 
+window.view = (id)=> location.href = "/templates/view.html?id="+id; 
+window.edit = (id)=> location.href = "/templates/edit.html?id="+id; 
+ 
+window.delTpl = async (id)=>{ 
+  if(!confirm("¿Eliminar template?")) return; 
+  await fetch(API+"/"+id, { method:"DELETE", headers:{ "x-user-id":USER_ID }}); 
+  load(); 
+}; 
+ 
+window.apply = async(id)=>{ 
+  const res = await fetch(API+"/"+id+"/prefill", { headers:{ "x-user-id":USER_ID }}); 
+  const data = await res.json(); 
+  localStorage.setItem("originTemplate", JSON.stringify(data)); 
+  location.href = "/tasks/new.html"; 
+} 
+ 
+document.getElementById("search").onclick = ()=> load(document.getElementById("q").value); 
+document.getElementById("new").onclick = ()=> location.href = "/templates/new.html"; 
+ 
+load(); 
+</script> 
+</body> 
+</html>
