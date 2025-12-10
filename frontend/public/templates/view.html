@@ -1,0 +1,44 @@
+<!doctype html> 
+<html> 
+<head><meta charset="utf-8"><title>Template</title> 
+<style>body{font-family:Arial;max-width:700px;margin:20px auto;padding:0 
+12px}.tag{background:#eee;padding:4px 
+8px;border-radius:6px;margin-right:6px;display:inline-block}</style> 
+</head> 
+<body> 
+ 
+<div id="content">Cargando…</div> 
+ 
+<script> 
+const USER_ID = 1; 
+const id = new URLSearchParams(location.search).get("id"); 
+ 
+(async ()=>{ 
+  const res = await fetch("/templates/"+id, { headers:{ "x-user-id":USER_ID }}); 
+  if(!res.ok){ document.getElementById("content").innerText="No encontrada"; return; } 
+  const t = await res.json(); 
+ 
+  const tagHtml = (t.tags||[]).map(x=>`<span class='tag'>${x.name}</span>`).join(""); 
+ 
+  document.getElementById("content").innerHTML = ` 
+    <h1>${t.name}</h1> 
+    <p>${t.description || ""}</p> 
+    <p><strong>Prioridad:</strong> ${t.priority}</p> 
+    <p><strong>Team:</strong> ${t.teamId || "—"}</p> 
+    <p><strong>Tags:</strong> ${tagHtml}</p> 
+ 
+    <button onclick="location.href='/templates/edit.html?id=${t.id}'">Editar</button> 
+    <button onclick="applyTemplate(${t.id})">Aplicar</button> 
+    <button onclick="location.href='/templates'">Volver</button> 
+  `; 
+})(); 
+ 
+async function applyTemplate(id){ 
+  const res = await fetch(`/templates/${id}/prefill`, { headers:{ "x-user-id":USER_ID }}); 
+  const data = await res.json(); 
+localStorage.setItem("originTemplate", JSON.stringify(data)); 
+location.href = "/tasks/new.html"; 
+} 
+</script> 
+</body> 
+</html> 
