@@ -2,62 +2,43 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    ManyToMany,
-    JoinTable,
-    ManyToOne,
     CreateDateColumn,
     UpdateDateColumn,
-    Unique
+    ManyToOne,
+    JoinColumn,
 } from "typeorm";
 
-import { Tag } from "./tag.entity";
-import { User } from "./user.entity";
-import { Team } from "./team.entity";
+import { User } from "./User.entity";
+import { Project } from "./Project.entity";
 
-export enum Priority {
-    HIGH = "HIGH",
-    MEDIUM = "MEDIUM",
-    LOW = "LOW",
-}
+@Entity('tasks')
+export class Task {
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
 
-@Entity('task_templates')
-@Unique(["name","creatorId"])
-export class TaskTemplate {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @Column({ type: "varchar" })
+    title!: string;
 
-    @Column()
-    name: string;
-    
-    @Column({type:"text", nullable: true})
-    description?: string;
+    @Column({ type: "varchar", nullable: true })
+    description!: string | null;
 
-    @Column({type:"enum", enum: Priority, default: Priority.MEDIUM})
-    priority: Priority;
+    @Column({ type: "varchar", default: "pending" })
+    status!: "pending" | "in-progress" | "completed" | "cancelled";
 
-    @Column({nullable: true })
-    teamId?: number;
+    @CreateDateColumn({ name: "created_at" })
+    createdAt!: Date;
 
-    @ManyToOne(() => Team, { nullable: true, onDelete: "SET NULL"})
-    team?: Team;
+    @UpdateDateColumn({ name: "last_updated" })
+    lastUpdated!: Date;
 
-    @Column()
-    creatorId: number;
+    @Column({ type: "timestamp", nullable: true, name: "due_date" })
+    dueDate!: Date | null;
 
-    @ManyToOne(() => User, { nullable: false, onDelete: "CASCADE"})
-    creator: User;
+    @ManyToOne(() => User, user => user.id, { nullable: true })
+    @JoinColumn({ name: "assigned_to" })
+    assignedTo!: User | null;
 
-    @ManyToMany(() => Tag, { eager: true})
-    @JoinTable({
-        name: "task_template_tags",
-        joinColumn: {name: "tempplateId"},
-        inverseJoinColumn: {name: "tagId"},
-    })
-    tags: Tag[];
-
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
+    @ManyToOne(() => Project, project => project.id)
+    @JoinColumn({ name: "project_id" })
+    project!: Project;
 }
